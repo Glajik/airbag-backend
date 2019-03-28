@@ -1,13 +1,16 @@
-const path = require('path');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const ReplacePlugin = require('webpack-plugin-replace');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: {
-    main: './src/main.js',
+    App: './src/App.js',
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: '[name].js',
+    library: 'App',
+    // libraryExport: 'App',
+    libraryTarget: 'umd',
+    globalObject: 'this',
   },
   module: {
     rules: [
@@ -17,7 +20,8 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
+            plugins: ['lodash'],
+            presets: [['@babel/preset-env', { modules: false }]],
           },
         },
       },
@@ -28,5 +32,20 @@ module.exports = {
         loader: 'eslint-loader',
       },
     ],
+  },
+  plugins: [
+    new ReplacePlugin({
+      exclude: [
+        /node_modules/,
+      ],
+      values: {
+        'default: obj': "'default': obj",
+        '_findIndex.default': "_findIndex['default']",
+      },
+    }),
+    new LodashModuleReplacementPlugin(),
+  ],
+  optimization: {
+    minimize: false,
   },
 };

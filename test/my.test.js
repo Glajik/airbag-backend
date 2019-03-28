@@ -1,21 +1,25 @@
-import * as testm from '../src/main';
+import { expect } from 'chai';
+import Kava from '../node_modules/@airbag/kava/dist/kava';
+// import * as sinon from 'sinon';
+import main from '../src/main';
+
+const kava = new Kava();
 
 describe('Test', () => {
-  console.log(testm.default);
-
-  it('should succeed', (done) => {
-    setTimeout(done, 1000);
+  it('should succeed', () => {
+    expect(main()).is.equal(true);
   });
-
-  it('should fail', () => {
-    setTimeout(() => {
-      throw new Error('Failed');
-    }, 1000);
+  it('should succeed', () => {
+    const result = kava.isEqual(1, 1);
+    expect(result).is.true; // eslint-disable-line
   });
-
-  it('should randomly fail', () => {
-    // if (require('./module')) { // eslint-disable-line
-    // throw new Error('Randomly failed');
-    // }
+  it('should throw exception', (done) => {
+    try {
+      kava.isEqual(2, 'e');
+      done('wrong');
+    } catch (error) {
+      expect(error).instanceOf(Error);
+      done();
+    }
   });
 });
