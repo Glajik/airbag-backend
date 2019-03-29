@@ -1,6 +1,6 @@
-import { SheetWrapper } from '@airbag/sheet-wrapper';
+import ReferenceSuper from './ReferenceSuper';
 
-export default class PartTypes extends SheetWrapper {
+export default class PartTypes extends ReferenceSuper {
   constructor() {
     super({
       sheetName: 'partTypes',

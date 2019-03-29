@@ -2446,6 +2446,17 @@ function (_SheetHelper) {
       var length = this.sheet.getLastRow() - this.firstRow;
       this.sheet.showRows(this.firstRow, length);
     }
+    /**
+     * find column id by name
+     * @return index of column started from 1
+     * @param {*} field field name
+     */
+
+  }, {
+    key: "findColumnId",
+    value: function findColumnId(field) {
+      return _get(_getPrototypeOf(SheetWrapper.prototype), "findColumnId", this).call(this, field);
+    }
   }, {
     key: "spreadsheet",
     get: function get() {
@@ -2567,7 +2578,7 @@ function (_SheetWrapper) {
 }(SheetWrapper);
 
 
-// CONCATENATED MODULE: ./src/inner/Parts.js
+// CONCATENATED MODULE: ./src/db/Parts.js
 function Parts_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Parts_typeof = function _typeof(obj) { return typeof obj; }; } else { Parts_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Parts_typeof(obj); }
 
 function Parts_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2826,7 +2837,91 @@ var ImportingApp_doImport = function doImport() {
   Logger.log(saveToParts[0]);
   new Parts().updateSheet(saveToParts);
 };
-// CONCATENATED MODULE: ./src/inner/PartTypes.js
+// CONCATENATED MODULE: ./src/reference/ReferenceSuper.js
+function ReferenceSuper_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ReferenceSuper_typeof = function _typeof(obj) { return typeof obj; }; } else { ReferenceSuper_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ReferenceSuper_typeof(obj); }
+
+function ReferenceSuper_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function ReferenceSuper_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function ReferenceSuper_createClass(Constructor, protoProps, staticProps) { if (protoProps) ReferenceSuper_defineProperties(Constructor.prototype, protoProps); if (staticProps) ReferenceSuper_defineProperties(Constructor, staticProps); return Constructor; }
+
+function ReferenceSuper_possibleConstructorReturn(self, call) { if (call && (ReferenceSuper_typeof(call) === "object" || typeof call === "function")) { return call; } return ReferenceSuper_assertThisInitialized(self); }
+
+function ReferenceSuper_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function ReferenceSuper_getPrototypeOf(o) { ReferenceSuper_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ReferenceSuper_getPrototypeOf(o); }
+
+function ReferenceSuper_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ReferenceSuper_setPrototypeOf(subClass, superClass); }
+
+function ReferenceSuper_setPrototypeOf(o, p) { ReferenceSuper_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ReferenceSuper_setPrototypeOf(o, p); }
+
+
+
+
+var ReferenceSuper_ReferenceSuper =
+/*#__PURE__*/
+function (_SheetWrapper) {
+  ReferenceSuper_inherits(ReferenceSuper, _SheetWrapper);
+
+  function ReferenceSuper() {
+    ReferenceSuper_classCallCheck(this, ReferenceSuper);
+
+    return ReferenceSuper_possibleConstructorReturn(this, ReferenceSuper_getPrototypeOf(ReferenceSuper).apply(this, arguments));
+  }
+
+  ReferenceSuper_createClass(ReferenceSuper, [{
+    key: "onEdit",
+    value: function onEdit(e) {
+      // event data
+      var range = e.range;
+      var sheet = range.getSheet();
+      var sheetName = sheet.getName();
+      if (sheetName !== this.sheetName) return;
+      var rowId = range.getRow();
+      var columnId = range.getColumn();
+      var rows = range.getNumRows();
+      var columns = range.getNumColumns();
+      var oldValue = e.oldValue;
+      var newValue = e.value; // ignore if range is edited
+
+      var isRange = rows > 1 || columns > 1;
+      if (isRange) return; // ignore if header is edited
+
+      var isHeader = rowId <= this.numHeaders;
+      if (isHeader) return;
+      var isCellErased = typeof newValue === 'undefined' ? 'undefined' : ReferenceSuper_typeof(newValue) === 'object' && newValue.oldValue && oldValue;
+      var uuidColumnId = this.findColumnId('uuid');
+      var isUuidColumn = uuidColumnId === columnId; // remove row
+
+      if (isCellErased && isUuidColumn) {
+        sheet.deleteRow(rowId);
+        return;
+      }
+
+      if (isUuidColumn) {
+        // TODO:
+        // - find change uuid in all relative data
+        // - maybe it's concern to any other relative data with same id
+        return;
+      } // append uuid, if empty
+
+
+      var uuidRange = sheet.getRange(rowId, uuidColumnId);
+      var uuid = uuidRange.getValue();
+
+      if (isEmpty_default()(uuid)) {
+        // eslint-disable-next-line no-undef
+        uuidRange.setValue(Utilities.getUuid());
+      }
+    }
+  }]);
+
+  return ReferenceSuper;
+}(SheetWrapper);
+
+
+// CONCATENATED MODULE: ./src/reference/PartTypes.js
 function PartTypes_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { PartTypes_typeof = function _typeof(obj) { return typeof obj; }; } else { PartTypes_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return PartTypes_typeof(obj); }
 
 function PartTypes_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2845,8 +2940,8 @@ function PartTypes_setPrototypeOf(o, p) { PartTypes_setPrototypeOf = Object.setP
 
 var PartTypes =
 /*#__PURE__*/
-function (_SheetWrapper) {
-  PartTypes_inherits(PartTypes, _SheetWrapper);
+function (_ReferenceSuper) {
+  PartTypes_inherits(PartTypes, _ReferenceSuper);
 
   function PartTypes() {
     PartTypes_classCallCheck(this, PartTypes);
@@ -2859,10 +2954,10 @@ function (_SheetWrapper) {
   }
 
   return PartTypes;
-}(SheetWrapper);
+}(ReferenceSuper_ReferenceSuper);
 
 
-// CONCATENATED MODULE: ./src/inner/Locations.js
+// CONCATENATED MODULE: ./src/reference/Locations.js
 function Locations_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Locations_typeof = function _typeof(obj) { return typeof obj; }; } else { Locations_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Locations_typeof(obj); }
 
 function Locations_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2881,8 +2976,8 @@ function Locations_setPrototypeOf(o, p) { Locations_setPrototypeOf = Object.setP
 
 var Locations =
 /*#__PURE__*/
-function (_SheetWrapper) {
-  Locations_inherits(Locations, _SheetWrapper);
+function (_ReferenceSuper) {
+  Locations_inherits(Locations, _ReferenceSuper);
 
   function Locations() {
     Locations_classCallCheck(this, Locations);
@@ -2895,10 +2990,10 @@ function (_SheetWrapper) {
   }
 
   return Locations;
-}(SheetWrapper);
+}(ReferenceSuper_ReferenceSuper);
 
 
-// CONCATENATED MODULE: ./src/inner/Persons.js
+// CONCATENATED MODULE: ./src/reference/Persons.js
 function Persons_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Persons_typeof = function _typeof(obj) { return typeof obj; }; } else { Persons_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Persons_typeof(obj); }
 
 function Persons_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2917,8 +3012,8 @@ function Persons_setPrototypeOf(o, p) { Persons_setPrototypeOf = Object.setProto
 
 var Persons =
 /*#__PURE__*/
-function (_SheetWrapper) {
-  Persons_inherits(Persons, _SheetWrapper);
+function (_ReferenceSuper) {
+  Persons_inherits(Persons, _ReferenceSuper);
 
   function Persons() {
     Persons_classCallCheck(this, Persons);
@@ -2931,10 +3026,10 @@ function (_SheetWrapper) {
   }
 
   return Persons;
-}(SheetWrapper);
+}(ReferenceSuper_ReferenceSuper);
 
 
-// CONCATENATED MODULE: ./src/inner/Operations.js
+// CONCATENATED MODULE: ./src/reference/Operations.js
 function Operations_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Operations_typeof = function _typeof(obj) { return typeof obj; }; } else { Operations_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Operations_typeof(obj); }
 
 function Operations_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2953,8 +3048,8 @@ function Operations_setPrototypeOf(o, p) { Operations_setPrototypeOf = Object.se
 
 var Operations =
 /*#__PURE__*/
-function (_SheetWrapper) {
-  Operations_inherits(Operations, _SheetWrapper);
+function (_ReferenceSuper) {
+  Operations_inherits(Operations, _ReferenceSuper);
 
   function Operations() {
     Operations_classCallCheck(this, Operations);
@@ -2967,10 +3062,10 @@ function (_SheetWrapper) {
   }
 
   return Operations;
-}(SheetWrapper);
+}(ReferenceSuper_ReferenceSuper);
 
 
-// CONCATENATED MODULE: ./src/inner/Statuses.js
+// CONCATENATED MODULE: ./src/reference/Statuses.js
 function Statuses_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Statuses_typeof = function _typeof(obj) { return typeof obj; }; } else { Statuses_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Statuses_typeof(obj); }
 
 function Statuses_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2989,8 +3084,8 @@ function Statuses_setPrototypeOf(o, p) { Statuses_setPrototypeOf = Object.setPro
 
 var Statuses =
 /*#__PURE__*/
-function (_SheetWrapper) {
-  Statuses_inherits(Statuses, _SheetWrapper);
+function (_ReferenceSuper) {
+  Statuses_inherits(Statuses, _ReferenceSuper);
 
   function Statuses() {
     Statuses_classCallCheck(this, Statuses);
@@ -3003,10 +3098,10 @@ function (_SheetWrapper) {
   }
 
   return Statuses;
-}(SheetWrapper);
+}(ReferenceSuper_ReferenceSuper);
 
 
-// CONCATENATED MODULE: ./src/inner/Prices.js
+// CONCATENATED MODULE: ./src/reference/Prices.js
 function Prices_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Prices_typeof = function _typeof(obj) { return typeof obj; }; } else { Prices_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Prices_typeof(obj); }
 
 function Prices_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3025,8 +3120,8 @@ function Prices_setPrototypeOf(o, p) { Prices_setPrototypeOf = Object.setPrototy
 
 var Prices =
 /*#__PURE__*/
-function (_SheetWrapper) {
-  Prices_inherits(Prices, _SheetWrapper);
+function (_ReferenceSuper) {
+  Prices_inherits(Prices, _ReferenceSuper);
 
   function Prices() {
     Prices_classCallCheck(this, Prices);
@@ -3039,7 +3134,7 @@ function (_SheetWrapper) {
   }
 
   return Prices;
-}(SheetWrapper);
+}(ReferenceSuper_ReferenceSuper);
 
 
 // CONCATENATED MODULE: ./src/ServiceApp.js
@@ -3068,15 +3163,32 @@ var ServiceApp_uuidFillMissed = function uuidFillMissed() {
     });
   });
 };
+// CONCATENATED MODULE: ./src/EventHandlingApp.js
+
+
+
+
+
+ // eslint-disable-next-line import/prefer-default-export
+
+var EventHandlingApp_onEdit = function onEdit(e) {
+  [new PartTypes(), new Locations(), new Persons(), new Operations(), new Statuses(), new Prices()].forEach(function (s) {
+    return s.onEdit(e);
+  });
+};
 // CONCATENATED MODULE: ./src/App.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "doImport", function() { return App_doImport; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uuidFillMissed", function() { return App_uuidFillMissed; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onEdit", function() { return App_onEdit; });
+
 
  // eslint-disable-next-line import/prefer-default-export
 
 var App_doImport = ImportingApp_doImport;
 
 var App_uuidFillMissed = ServiceApp_uuidFillMissed;
+
+var App_onEdit = EventHandlingApp_onEdit;
 
 
 /***/ })

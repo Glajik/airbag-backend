@@ -1,6 +1,6 @@
-import { SheetWrapper } from '@airbag/sheet-wrapper';
+import ReferenceSuper from './ReferenceSuper';
 
-export default class Persons extends SheetWrapper {
+export default class Persons extends ReferenceSuper {
   constructor() {
     super({
       sheetName: 'persons',

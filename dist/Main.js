@@ -1,13 +1,16 @@
 "use strict";
 
-// eslint-disable-next-line no-unused-vars
-function doImport() {
-  // eslint-disable-next-line no-undef
-  App.doImport();
-} // eslint-disable-next-line no-unused-vars
+/* eslint-disable no-undef */
 
+/* eslint-disable no-unused-vars */
+function onEdit(e) {
+  App.onEdit(e);
+}
+
+function doImport() {
+  App.doImport();
+}
 
 function uuidFillMissed() {
-  // eslint-disable-next-line no-undef
   App.uuidFillMissed();
 }
