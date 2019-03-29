@@ -14,3 +14,8 @@ function doImport() {
 function uuidFillMissed() {
   App.uuidFillMissed();
 }
+
+function doTests() {
+  var outputText = App.doAllTests();
+  Logger.log(outputText);
+}
