@@ -1,10 +1,10 @@
 import isEmpty from 'lodash/isEmpty';
-import PartTypes from './inner/PartTypes';
-import Locations from './inner/Locations';
-import Persons from './inner/Persons';
-import Operations from './inner/Operations';
-import Statuses from './inner/Statuses';
-import Prices from './inner/Prices';
+import PartTypes from './reference/PartTypes';
+import Locations from './reference/Locations';
+import Persons from './reference/Persons';
+import Operations from './reference/Operations';
+import Statuses from './reference/Statuses';
+import Prices from './reference/Prices';
 
 
 // eslint-disable-next-line import/prefer-default-export

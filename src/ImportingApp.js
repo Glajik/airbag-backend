@@ -1,5 +1,5 @@
 import AcceptancePlastic from './outter/AcceptancePlastic';
-import Parts from './inner/Parts';
+import Parts from './db/Parts';
 import { getPartType, getPartState } from './importing/partHelpers';
 
 /*
