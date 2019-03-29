@@ -41,6 +41,8 @@ module.exports = {
       values: {
         'default: obj': "'default': obj",
         '_findIndex.default': "_findIndex['default']",
+        '_isEqual.default': "_isEqual['default']",
+        '_isArray.default': "_isArray['default']",
       },
     }),
     new LodashModuleReplacementPlugin(),

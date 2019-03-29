@@ -9,7 +9,8 @@
     "build": "NODE_ENV=production babel gs_src --out-dir dist && npx webpack",
     "ln1": "npm link @airbag/sheet-helper",
     "ln2": "npm link @airbag/sheet-wrapper",
-    "relink": "npm run ln1 && npm run ln2",
+    "ln3": "npm link @airbag/kava",
+    "relink": "npm run ln1 && npm run ln2 && npm run ln3",
     "deploy": "cd dist && clasp push && cd .."
   },
   "author": "Slavik",
@@ -35,10 +36,15 @@
     "webpack-plugin-replace": "^1.2.0"
   },
   "dependencies": {
+    "@airbag/kava": "^1.0.0",
+    "@airbag/sheet-helper": "^1.0.0",
     "@airbag/sheet-wrapper": "^1.0.0",
     "@babel/polyfill": "^7.2.5",
     "@types/google-apps-script": "0.0.41",
     "lodash": "^4.17.11",
-    "node-uuid": "^1.4.8"
+    "node-uuid": "^1.4.8",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.5",
+    "reselect": "^4.0.0"
   }
 }
