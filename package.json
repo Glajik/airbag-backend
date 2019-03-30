@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "@glajik/sheet-wrapper": "file:/usr/lib/node_modules/@glajik/sheet-wrapper",
-    "@glajik/kava": "file:/usr/lib/node_modules/@glajik/@glajik/kava",
+    "@glajik/kava": "file:usr/lib/node_modules/@glajik/kava",
+    "@glajik/sheet-wrapper": "file:usr/lib/node_modules/@glajik/sheet-wrapper",
     "@types/google-apps-script": "0.0.41",
     "chai": "^4.2.0",
     "lodash": "^4.17.11",

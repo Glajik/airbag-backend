@@ -1,4 +1,4 @@
-import { SheetWrapper } from '@glajik/sheet-wrapper';
+import SheetWrapper from '@glajik/sheet-wrapper';
 
 // { uuid, collection, oldSnapshot, newSnapshot, datestamp }
 

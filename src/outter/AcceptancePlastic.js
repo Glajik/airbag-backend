@@ -1,4 +1,4 @@
-import { SheetWrapper } from '@glajik/sheet-wrapper';
+import SheetWrapper from '@glajik/sheet-wrapper';
 
 // Приемка Пластик
 const url = 'https://docs.google.com/spreadsheets/d/10jo0P_nyUju2mjgydSo1PVXcAQc1DkZQjs9K8-47W2Q/edit';

@@ -1,4 +1,4 @@
-import { SheetWrapper } from '@glajik/sheet-wrapper';
+import SheetWrapper from '@glajik/sheet-wrapper';
 
 export default class Parts extends SheetWrapper {
   constructor() {
