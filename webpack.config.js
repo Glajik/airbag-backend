@@ -1,19 +1,43 @@
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-const ReplacePlugin = require('webpack-plugin-replace');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const StringReplacePlugin = require('string-replace-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
+  // mode: 'production',
   entry: {
-    App: './src/App.js',
+    MainApp: './src/MainApp.js',
+    ServicingApp: './src/ServicingApp.js',
+    ImportingApp: './src/ImportingApp.js',
+    TestingApp: './src/TestingApp.js',
+    HandlingApp: './src/HandlingApp.js',
   },
   output: {
-    library: 'App',
+    library: '[name]',
     // libraryExport: 'App',
     libraryTarget: 'umd',
     globalObject: 'this',
   },
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: StringReplacePlugin.replace({
+            replacements: [
+              {
+                pattern: /\.default/g,
+                replacement: () => "['default']",
+              },
+              {
+                pattern: /default: obj/g,
+                replacement: () => "'default': obj",
+              },
+            ],
+          }),
+        },
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -34,20 +58,18 @@ module.exports = {
     ],
   },
   plugins: [
-    new ReplacePlugin({
-      exclude: [
-        /node_modules/,
-      ],
-      values: {
-        'default: obj': "'default': obj",
-        '_findIndex.default': "_findIndex['default']",
-        '_isEqual.default': "_isEqual['default']",
-        '_isArray.default': "_isArray['default']",
-      },
-    }),
+    new StringReplacePlugin(),
     new LodashModuleReplacementPlugin(),
   ],
   optimization: {
-    minimize: false,
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          output: {
+            comments: false,
+          },
+        },
+      }),
+    ],
   },
 };

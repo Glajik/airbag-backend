@@ -1,4 +1,4 @@
-import { SheetWrapper } from '@airbag/sheet-wrapper';
+import { SheetWrapper } from '@glajik/sheet-wrapper';
 
 // Приемка Мешки
 const url = 'https://docs.google.com/spreadsheets/d/1hPhnk146eikavhiSupiur4DXL9XFzQk8cF8WWABojAs/edit';

@@ -1,4 +1,4 @@
-import Kava from '@airbag/kava';
+import Kava from '@glajik/kava';
 import { expect } from 'chai';
 
 const test = new Kava('Importing integration test');

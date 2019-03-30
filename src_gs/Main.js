@@ -1,18 +1,18 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 function onEdit(e) {
-  App.onEdit(e);
+  HandlingApp.onEdit(e);
 }
 
 function doImport() {
-  App.doImport();
+  ImportingApp.doImport();
 }
 
 function uuidFillMissed() {
-  App.uuidFillMissed();
+  ServicingApp.uuidFillMissed();
 }
 
 function doTests() {
-  const outputText = App.doAllTests();
+  const outputText = TestingApp.doAllTests();
   Logger.log(outputText);
 }

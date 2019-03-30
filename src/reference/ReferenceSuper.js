@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import { SheetWrapper } from '@airbag/sheet-wrapper';
+import { SheetWrapper } from '@glajik/sheet-wrapper';
 
 export default class ReferenceSuper extends SheetWrapper {
   onEdit(e) {

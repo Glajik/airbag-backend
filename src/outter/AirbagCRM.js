@@ -1,4 +1,4 @@
-import { SheetWrapper } from '@airbag/sheet-wrapper';
+import { SheetWrapper } from '@glajik/sheet-wrapper';
 
 // AirbagCRM
 const url = 'https://docs.google.com/spreadsheets/d/1O4DWoYwO5JuXXwSgbcOj9I1s6L6d_DigHi_GxRXIhiw/edit';
