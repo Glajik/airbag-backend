@@ -1,7 +1,30 @@
 import isEmpty from 'lodash/isEmpty';
 
-export const getPartState = (data) => {
+const makeMap = (key, coll) => coll.reduce((acc, item) => {
+  const setKey = item[key];
+  acc[setKey] = item;
+  return acc;
+}, {});
+
+// const getState = (status, date, note, location) => {
+//   if (isEmpty(status)) return false;
+//   return {
+//     changedAt: new Date(date),
+//     location: {
+//       ...findPersonsLocation('User1'),
+//     },
+//     status: {
+//       ...findStatusByName('sentToPlastic'),
+//     },
+//     person: {
+//       ...findPersonByAlias('User1'),
+//     },
+//   };
+// }
+
+const getPartState = (entry, options) => {
   const {
+    partUuid,
     sentToProductionStatus,
     sentToProductionDate,
     acceptedStatus,
@@ -10,15 +33,30 @@ export const getPartState = (data) => {
     readyDate,
     returnStatus,
     returnDate,
-  } = data;
+  } = entry;
+
+  const { refs } = options;
+  const { statuses, locations, persons } = refs;
+  // const personsMap = normalize(persons, [personAliases])
+  //   .entities
+  //   .personAliases;
+
+  const aliasesMap = makeMap('alias', persons);
+  const locationLabelMap = makeMap('label', locations);
+  const statusMap = makeMap('name', statuses);
+  const findPersonByAlias = alias => aliasesMap[alias];
+  const findPersonsLocation = (alias) => {
+    const person = findPersonByAlias(alias);
+    const { locationLabel } = person;
+    const location = locationLabelMap[locationLabel];
+    return location;
+  };
+  const findStatusByName = name => statusMap[name];
 
   if (!isEmpty(returnStatus)) {
     return {
-      changedAt: returnDate,
-      location: {
-        name: 'acceptance',
-        label: 'Приемка',
-      },
+      changedAt: new Date(returnDate),
+      location: { ...acceptance },
       status: {
         name: 'accepted',
         label: 'Получил из производства',
@@ -84,22 +122,16 @@ export const getPartState = (data) => {
 
   if (!isEmpty(sentToProductionStatus)) {
     return {
-      changedAt: sentToProductionDate,
+      partUuid,
+      changedAt: new Date(sentToProductionDate),
       location: {
-        name: 'plastic',
-        label: 'Пластик',
+        ...findPersonsLocation('User1'),
       },
       status: {
-        name: 'accepted',
-        label: 'Принял в работу',
+        ...findStatusByName('sentToPlastic'),
       },
       person: {
-        account: 'andrey.autocrash@gmail.com',
-        name: 'Андрей Ст.',
-        department: {
-          name: 'plastic',
-          label: 'Пластик',
-        },
+        ...findPersonByAlias('User1'),
       },
     };
   }
@@ -113,12 +145,10 @@ export const getPartState = (data) => {
   };
 };
 
-export default data => data.map(({ uuid, valuesObj }) => {
-  const { orderId, model, color } = valuesObj;
-  return {
-    uuid: getUuid(),
-    orderId,
-    model,
-    color,
+export default (data, options) => data.map(({ uuid: partUuid, valuesObj, notesObj }) => {
+  const item = {
+    partUuid,
+    ...valuesObj,
   };
+  return getPartState(item, options);
 });
