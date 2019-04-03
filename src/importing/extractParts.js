@@ -8,10 +8,11 @@ export default data => data.map(({ uuid, valuesObj }) => {
 
   return {
     uuid,
-    label: partName, // will be replaced with data from reference
+    type: { partName }, // complete from partTypes
+    state: {}, // complete by extractPartState
     orderId,
     model,
     color,
-    // appendedAt: new Date(), // fill from AirbagCRM 'start' field
+    appendedAt: { orderId, field: 'start' }, // fill from AirbagCRM 'start' field
   };
 });
