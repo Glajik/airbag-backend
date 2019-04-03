@@ -34,6 +34,18 @@ module.exports = {
                 pattern: /default: obj/g,
                 replacement: () => "'default': obj",
               },
+              {
+                pattern: /import makeUuid from 'uuid\/v4';/g,
+                replacement: () => '',
+              },
+              {
+                pattern: /import makeUuid from 'uuid\/v4';/g,
+                replacement: () => '',
+              },
+              {
+                pattern: /(?<!Utilities\.)getUuid\(\)/g,
+                replacement: () => 'Utilities.getUuid()',
+              },
             ],
           }),
         },

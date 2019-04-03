@@ -4,7 +4,7 @@ export default class Parts extends SheetWrapper {
   constructor() {
     super({
       sheetName: 'parts',
-      fields: 'uuid, data, acceptance, plastic, roofs, bags',
+      fields: 'uuid, data',
       numHeaders: 1,
     });
   }

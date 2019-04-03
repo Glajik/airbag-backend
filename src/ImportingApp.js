@@ -1,6 +1,12 @@
+/* eslint-disable */
+
 import AcceptancePlastic from './outter/AcceptancePlastic';
+import AcceptanceBags from './outter/AcceptanceBags';
+import AirbagCRM from './outter/AirbagCRM';
+
 import Parts from './db/Parts';
 import { getPartType, getPartState } from './importing/partHelpers';
+
 
 /*
       state: {
@@ -24,7 +30,10 @@ import { getPartType, getPartState } from './importing/partHelpers';
 
 
 // eslint-disable-next-line max-len
-// const regexp = /^(?:=ГИПЕРССЫЛКА\( *")(https:\/\/drive\.google\.com\/drive\/.+)(?:" *; *".+" *\))$/g;
+const regexp = /^(?:=ГИПЕРССЫЛКА\( *")(https:\/\/drive\.google\.com\/drive\/.+)(?:" *; *".+" *\))$/g;
+
+// eslint-disable-next-line no-undef
+const prepare = data => ({ uuid: Utilities.getUuid(), data: JSON.stringify(data) });
 
 /**
  * TODO:
@@ -32,48 +41,67 @@ import { getPartType, getPartState } from './importing/partHelpers';
  */
 // eslint-disable-next-line import/prefer-default-export
 export const doImport = () => {
-  const dataCollSpecial = new AcceptancePlastic().extractAll();
+  const plasticExportData = new AcceptancePlastic().extractAll();
+  const bagsExportData = new AcceptanceBags().extractAll();
+  const airbagcrmExportData = new AirbagCRM().extractAll();
 
-  const saveToParts = dataCollSpecial.map(({ valuesObj }) => {
+  const partsData = 
+  plasticExportData.map(({ valuesObj, formulasObj, notesObj }) => {
     const {
       orderId,
       model,
       color,
-      commentPlastic,
     } = valuesObj;
 
-    // eslint-disable-next-line no-undef
-    const uuid = Utilities.getUuid();
-    const data = {
-      partType: getPartType(valuesObj),
-      color,
-      model,
+    return prepare({
       orderId,
-      comments: [
-        {
-          type: 'plastic',
-          text: commentPlastic,
-          person: {
-            name: 'Максим',
-            account: 'autocrash.maksim@gmail.com',
-            department: 'managers',
-          },
-        },
-      ],
+      model,
+      color,
+      partType: getPartType(valuesObj),
+      comments: [],
       state: getPartState(valuesObj),
-    };
+    });
+  });
 
-    return {
-      uuid,
-      data: JSON.stringify(data),
-      acceptance: '',
-      plastic: '',
-      roofs: '',
-      bags: '',
-    };
+  const commentsData = plasticExportData.map(({ valuesObj }) => {
+    const { orderId, commentPlastic } = valuesObj;
+    return prepare({
+      type: 'order',
+      orderId,
+      text: commentPlastic,
+      from: {
+        name: 'Максим',
+        account: 'autocrash.maksim@gmail.com',
+        department: 'managers',
+      },
+      to: {
+        name: '*',
+        account: '*',
+        department: 'plastic',
+      },
+      createdAt: getOrderCreateAt(orderId),
+    });
+  });
+
+  const photosData = plasticExportData.map(({ valuesObj, formulasObj, notesObj }) => {
+    const { orderId } = valuesObj;
+    return prepare({
+      type: 'order',
+      orderId,
+      text: commentPlastic,
+      to: {
+        name: '*',
+        account: '*',
+        department: 'plastic',
+      },
+      from: {
+        name: 'Максим',
+        account: 'autocrash.maksim@gmail.com',
+        department: 'managers',
+      },
+    });
   });
 
   // eslint-disable-next-line no-undef
-  Logger.log(saveToParts[0]);
-  new Parts().updateSheet(saveToParts);
+  new Parts().updateSheet(partsData);
 };

@@ -1,4 +1,4 @@
-import SheetWrapper from '@glajik/sheet-wrapper';
+import OutterSuper from './OutterSuper';
 
 // Приемка Пластик
 const url = 'https://docs.google.com/spreadsheets/d/10jo0P_nyUju2mjgydSo1PVXcAQc1DkZQjs9K8-47W2Q/edit';
@@ -29,32 +29,8 @@ const options = {
   ],
 };
 
-export default class AcceptancePlastic extends SheetWrapper {
+export default class AcceptancePlastic extends OutterSuper {
   constructor() {
-    super(options);
-
-    this.url = url;
-  }
-
-  get spreadsheet() {
-    // eslint-disable-next-line no-undef
-    return SpreadsheetApp.openByUrl(this.url);
-  }
-
-  get formulas() {
-    return this.spreadsheet.getDataRange().getFormulas();
-  }
-
-  get notes() {
-    return this.sheet.getDataRange().getNotes();
-  }
-
-  extractAll() {
-    const { values, formulas, notes } = this;
-    return values.map((rowValues, index) => ({
-      valuesObj: super.toRowData(rowValues),
-      formulasObj: super.toRowData(formulas[index]),
-      notesObj: super.toRowData(notes[index]),
-    })).slice(this.numHeaders); // remove header
+    super(options, url);
   }
 }
