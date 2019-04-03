@@ -8,10 +8,17 @@ const extractText = regex => (text) => {
   const [, extracted] = result;
   return extracted;
 };
+const vocab = 'Отправил, Отправлен, Деталь вернул, Подготовил к отправке, Принял цех, Принял'
+  .split(',')
+  .join(':? ?\n|');
+
+// eslint-disable-next-line max-len
+// /^(?<=Отправил:\n|Отправлен:\n|Деталь вернул:\n|Подготовил к отправке:\n|Принял цех:\n|Принял:\n)(.+)$/gm
+const nameRegex = new RegExp(`^(?<=${vocab}:? ?\n)(.+)$`, 'gm');
+const extractName = extractText(nameRegex);
 
 const extractLink = extractText(/^(?:=ГИПЕРССЫЛКА\( *")(https:\/\/drive\.google\.com\/drive\/.+)(?:" *; *".+" *\))$/g);
 
-const extractName = extractText(/^(?<=Отправил\n|Отправлен\n|Принял\n)(.+)$/gm);
 
 const getPhoto = (photoField, dateField) => (acc, entry) => {
   const {
@@ -27,9 +34,7 @@ const getPhoto = (photoField, dateField) => (acc, entry) => {
   const { [dateField]: note } = notesObj;
   const name = extractName(note);
 
-  const person = {
-    uuid: '', name, departament: '', account: '',
-  };
+  const person = { name };
   return [...acc, {
     uuid: getUuid(), partUuid, comment, url, createdAt, person,
   }];

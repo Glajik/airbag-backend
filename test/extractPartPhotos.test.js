@@ -3,7 +3,7 @@ import omit from 'lodash/omit';
 import { expect } from 'chai';
 // import * as sinon from 'sinon';
 // import { readFileSync } from 'fs';
-import extractPhotos from '../src/importing/extractPhotos';
+import extractPhotos from '../src/importing/extractPartPhotos';
 import plasticSample from './plasticSample';
 
 describe('Test', () => {
@@ -14,12 +14,7 @@ describe('Test', () => {
       url: 'https://drive.google.com/drive/folders/sendLinkToPhoto',
       comment: 'This is a sample of wheel',
       createdAt: new Date('2019-01-01T00:00:00.000Z'),
-      person: {
-        uuid: '',
-        name: 'User1',
-        departament: '',
-        account: '',
-      },
+      person: { name: 'User1' },
     }];
     // const content = readFileSync(plasticPath);
     // const data = JSON.parse(content);
