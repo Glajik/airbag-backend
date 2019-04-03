@@ -10,6 +10,7 @@ const extractText = regex => (text) => {
 };
 const vocab = 'Отправил, Отправлен, Деталь вернул, Подготовил к отправке, Принял цех, Принял'
   .split(',')
+  .map(v => v.trim())
   .join(':? ?\n|');
 
 // eslint-disable-next-line max-len
@@ -20,7 +21,7 @@ const extractName = extractText(nameRegex);
 const extractLink = extractText(/^(?:=ГИПЕРССЫЛКА\( *")(https:\/\/drive\.google\.com\/drive\/.+)(?:" *; *".+" *\))$/g);
 
 
-const getPhoto = (photoField, dateField) => (acc, entry) => {
+const getPhoto = (type, photoField, dateField) => (acc, entry) => {
   const {
     uuid: partUuid, valuesObj, formulasObj, notesObj,
   } = entry;
@@ -34,13 +35,29 @@ const getPhoto = (photoField, dateField) => (acc, entry) => {
   const { [dateField]: note } = notesObj;
   const name = extractName(note);
 
-  const person = { name };
+  // const person = {
+  //   uuid,
+  //   name,
+  //   account,
+  //   from: { uuid, label }
+  // };
+
+  const person = {
+    name, // will be replaced with data from reference
+  };
+
   return [...acc, {
-    uuid: getUuid(), partUuid, comment, url, createdAt, person,
+    uuid: getUuid(),
+    type,
+    partUuid,
+    comment,
+    url,
+    createdAt,
+    person,
   }];
 };
 
 export default data => [
-  ...data.reduce(getPhoto('sendLinkToPhoto', 'sentToProductionDate'), []),
-  ...data.reduce(getPhoto('returnLinkToPhoto', 'returnDate'), []),
+  ...data.reduce(getPhoto('before', 'sendLinkToPhoto', 'sentToProductionDate'), []),
+  ...data.reduce(getPhoto('after', 'returnLinkToPhoto', 'returnDate'), []),
 ];

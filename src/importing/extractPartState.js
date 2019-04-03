@@ -1,23 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
 
-/*
-Отправил:
-Экстрим, Андрей
-
-Отправил:
-ACGhkgg2JMYUY2cHEPjGiQf7o8jUNMc4igDKoSC8gyWVyJCrd9gk+3fc7fh0dn9bpY32al8XewYC
-
-Принял цех:
-Авалон, Андрей
-
-Подготовил к отправке:
-Авалон, Андрей
-
-Принял:
-Экстрим, Андрей
-*/
-
-// eslint-disable-next-line import/prefer-default-export
 export const getPartState = (data) => {
   const {
     sentToProductionStatus,
@@ -131,20 +113,12 @@ export const getPartState = (data) => {
   };
 };
 
-/**
- * TODO:
- * - Use data from partTypes tab
- * @param {*} data rowObject data
- */
-// eslint-disable-next-line import/prefer-default-export
-export const getPartType = (data) => {
-  const { partName } = data;
+export default data => data.map(({ uuid, valuesObj }) => {
+  const { orderId, model, color } = valuesObj;
   return {
-    // eslint-disable-next-line no-undef
-    uuid: Utilities.getUuid(),
-    class: 'wheel',
-    name: partName,
-    label: partName,
-    airbagAlias: 'wheel_coverRef',
+    uuid: getUuid(),
+    orderId,
+    model,
+    color,
   };
-};
+});
