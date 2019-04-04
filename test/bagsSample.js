@@ -21,6 +21,6 @@ export default {
   formulasObj: {
   },
   notesObj: {
-    sentToProductionDate: 'Отправил:\nJeka',
+    sentToProductionDate: 'Отправил:\nUsernameAlias',
   },
 };

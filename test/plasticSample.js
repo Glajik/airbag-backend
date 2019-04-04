@@ -27,6 +27,6 @@ export default {
   },
   notesObj: {
     sendLinkToPhoto: 'This is a sample of wheel',
-    sentToProductionDate: 'Отправил:\nUser1',
+    sentToProductionDate: 'Отправил:\nUsernameAlias',
   },
 };
