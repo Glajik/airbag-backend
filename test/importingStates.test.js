@@ -2,30 +2,12 @@ import omit from 'lodash/omit';
 import { expect } from 'chai';
 import Index from '../src/importing/Index';
 import extractStates from '../src/importing/extractStates';
-import completeStates from '../src/importing/completeStates';
 import plasticSample from './plasticSample';
 
 const rmId = coll => coll.map(v => omit(v, 'uuid'));
 
 describe('Importing part states', () => {
-  it('Should make plain object from plasticSample as in assertion', () => {
-    const assertion = [{
-      uuid: 'some-uuid',
-      partUuid: 'f1558022-194e-48b9-9909-a7058810ce35',
-      status: { name: 'SENT' },
-      location: {},
-      person: { alias: 'UsernameAlias' },
-      changedAt: new Date('2019-01-01T00:00:00.000Z'),
-    }];
-
-    const data = [plasticSample];
-    const result = extractStates(data);
-    const [first] = result;
-    expect(first).is.haveOwnProperty('uuid');
-    expect(rmId(result)).is.deep.equal(rmId(assertion));
-  });
-
-  it('Should complete { person, location, status } in source as in assertion', () => {
+  it('Should make plain object as in assertion from plasticSample', () => {
     const acceptance = {
       uuid: '909f0cf8-0492-48b2-9c02-b10737edb080',
       name: 'acceptance1',
@@ -59,17 +41,6 @@ describe('Importing part states', () => {
       statusIndex: new Index(statusColl),
     };
 
-    const source = [{
-      uuid: 'some-uuid',
-      partUuid: 'f1558022-194e-48b9-9909-a7058810ce35',
-      status: {
-        name: 'SENT',
-      },
-      location: {},
-      person: { alias: 'UsernameAlias' },
-      changedAt: new Date('2019-01-01T00:00:00.000Z'),
-    }];
-
     const assertion = [{
       uuid: 'some-uuid',
       partUuid: 'f1558022-194e-48b9-9909-a7058810ce35',
@@ -92,7 +63,10 @@ describe('Importing part states', () => {
       changedAt: new Date('2019-01-01T00:00:00.000Z'),
     }];
 
-    const result = completeStates(source, indexes);
-    expect(result).is.deep.equal(assertion);
+    const data = [plasticSample];
+    const result = extractStates(data, indexes);
+    const [first] = result;
+    expect(first).is.haveOwnProperty('uuid');
+    expect(rmId(result)).is.deep.equal(rmId(assertion));
   });
 });

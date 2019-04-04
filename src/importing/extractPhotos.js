@@ -1,6 +1,7 @@
 import getUuid from 'uuid/v4';
 import isEmpty from 'lodash/isEmpty';
 import { extractLink, extractPersonAlias } from './helpers';
+import { fillPerson } from './completePersons';
 
 const getPhoto = (type, photoField, dateField) => (acc, entry) => {
   const {
@@ -15,13 +16,6 @@ const getPhoto = (type, photoField, dateField) => (acc, entry) => {
   const { [dateField]: createdAt } = valuesObj;
   const { [dateField]: note } = notesObj;
 
-  // const person = {
-  //   uuid,
-  //   name,
-  //   account,
-  //   from: { uuid, label }
-  // };
-
   return [...acc, {
     uuid: getUuid(),
     type,
@@ -35,7 +29,7 @@ const getPhoto = (type, photoField, dateField) => (acc, entry) => {
   }];
 };
 
-export default data => [
+export default (data, { personIndex }) => [
   ...data.reduce(getPhoto('before', 'sendLinkToPhoto', 'sentToProductionDate'), []),
   ...data.reduce(getPhoto('after', 'returnLinkToPhoto', 'returnDate'), []),
-];
+].map(fillPerson(personIndex));

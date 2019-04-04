@@ -1,6 +1,9 @@
 import getUuid from 'uuid/v4';
 import isEmpty from 'lodash/isEmpty';
 import { extractPersonAlias } from './helpers';
+import { fillPerson } from './completePersons';
+import { fillStatus } from './completeStatuses';
+import { fillLocation } from './completeLocations';
 
 const getPartState = (acc, entry) => {
   const { uuid: partUuid, valuesObj, notesObj } = entry;
@@ -58,4 +61,7 @@ const getPartState = (acc, entry) => {
   ];
 };
 
-export default data => data.reduce(getPartState, []);
+export default (data, { personIndex, locationIndex, statusIndex }) => data.reduce(getPartState, [])
+  .map(fillPerson(personIndex))
+  .map(fillLocation(locationIndex))
+  .map(fillStatus(statusIndex));
