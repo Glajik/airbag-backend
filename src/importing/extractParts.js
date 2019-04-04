@@ -1,5 +1,17 @@
 import { fillPartType } from './completePartTypes';
+import { fillState } from './completeStates';
 
+const getStartDate = (indx, { orderId }) => {
+  const { start } = indx.get('id', orderId);
+  if (!start) return '';
+  try {
+    return new Date(start);
+  } catch (error) {
+    return '';
+  }
+};
+
+const fillAppendedAt = indx => item => ({ ...item, appendedAt: getStartDate(indx, item) });
 
 const getPart = (entry) => {
   const { uuid, valuesObj } = entry;
@@ -10,16 +22,18 @@ const getPart = (entry) => {
 
   return {
     uuid,
-    label: '', // complete by completePartTypes
-    partType: { alias: partName }, // complete by completePartTypes
-    state: {}, // complete by completeState
+    label: '',
+    partType: { alias: partName },
+    state: {},
     orderId,
     model,
     color,
-    appendedAt: { orderId, field: 'start' }, // fill from AirbagCRM 'start' field
+    appendedAt: '',
   };
 };
 
-export default (data, { partTypeIndex }) => data
+export default (data, { partTypeIndex, stateIndex, airbagCrmIndex }) => data
   .map(getPart)
-  .map(fillPartType(partTypeIndex));
+  .map(fillPartType(partTypeIndex))
+  .map(fillState(stateIndex))
+  .map(fillAppendedAt(airbagCrmIndex));

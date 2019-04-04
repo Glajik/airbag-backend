@@ -47,6 +47,7 @@
     "lodash": "^4.17.11",
     "node-uuid": "^1.4.8",
     "normalizr": "^3.3.0",
+    "omit-deep-lodash": "^1.1.4",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
     "reselect": "^4.0.0",
