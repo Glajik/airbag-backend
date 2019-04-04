@@ -44,10 +44,9 @@ const getPartState = (acc, entry) => {
     return {
       uuid: getUuid(),
       partUuid,
-      name,
-      label: { statusName: name },
-      location: { personAlias },
-      person: { personAlias },
+      status: { name },
+      location: {},
+      person: { alias: personAlias },
       changedAt: new Date(date),
     };
   };

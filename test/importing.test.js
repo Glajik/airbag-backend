@@ -2,17 +2,19 @@ import omit from 'lodash/omit';
 import { expect } from 'chai';
 // import * as sinon from 'sinon';
 // import { readFileSync } from 'fs';
-import extractPhotos from '../src/importing/extractPartPhotos';
+import extractPhotos from '../src/importing/extractPhotos';
 import extractParts from '../src/importing/extractParts';
-import extractPartState from '../src/importing/extractPartState';
+import extractStates from '../src/importing/extractStates';
 import plasticSample from './plasticSample';
+import completeStates from '../src/importing/completeStates';
+import Index from '../src/importing/Index';
 
 // const content = readFileSync(plasticPath);
 // const data = JSON.parse(content);
 // expect(data).is.instanceof(Array);
 const rmId = coll => coll.map(v => omit(v, 'uuid'));
 
-describe('Test on prepared samples', () => {
+describe('extract stage', () => {
   // const plasticPath = './test/datasource/Цех пластика.json';
   it('extractPhotos()', () => {
     const assertion = [{
@@ -34,6 +36,7 @@ describe('Test on prepared samples', () => {
   it('extractParts()', () => {
     const assertion = [{
       uuid: 'f1558022-194e-48b9-9909-a7058810ce35',
+      name: '',
       partType: { partName: 'Руль' },
       state: {},
       orderId: 1234,
@@ -48,50 +51,99 @@ describe('Test on prepared samples', () => {
     expect(result).is.deep.equal(assertion);
   });
 
-  it('extractPartState()', () => {
+  it('extractStates()', () => {
     const assertion = [{
       uuid: 'some-uuid',
       partUuid: 'f1558022-194e-48b9-9909-a7058810ce35',
-      name: 'SEND',
-      label: { statusName: 'SEND' },
-      location: { personAlias: 'User1' },
-      person: { personAlias: 'User1' },
+      status: { name: 'SEND' },
+      location: {},
+      person: { alias: 'User1' },
       changedAt: new Date('2019-01-01T00:00:00.000Z'),
     }];
 
     const data = [plasticSample];
-    const result = extractPartState(data);
+    const result = extractStates(data);
     const [first] = result;
     expect(first).is.haveOwnProperty('uuid');
     expect(rmId(result)).is.deep.equal(rmId(assertion));
   });
 });
 
-// const acceptance = {
-//   uuid: '909f0cf8-0492-48b2-9c02-b10737edb080',
-//   name: 'acceptance1',
-//   label: 'Приемка Экстрим',
-// };
+describe('complete stage', () => {
+  it('state structure', () => {
+    const acceptance = {
+      uuid: '909f0cf8-0492-48b2-9c02-b10737edb080',
+      name: 'acceptance1',
+      label: 'Приемка Экстрим',
+    };
 
-// const production = {
-//   uuid: '909f0cf8-0492-48b2-9c02-b10737edb080',
-//   name: 'acceptance1',
-//   label: 'Приемка Экстрим',
-// };
+    const production = {
+      uuid: 'd851eb34-4cb7-4956-838b-ae82118d8c50',
+      name: 'plastic',
+      label: 'Пластик',
+    };
 
-// const locations = [acceptance, production];
+    const person = {
+      uuid: 'b10b0acd-c7e4-4d82-8b88-6e2c5febcd1e',
+      name: 'User',
+      account: 'user@gmail.com',
+      alias: 'User1',
+      locationLabel: 'Приемка Экстрим',
+    };
 
-// const persons = [{
-//   uuid: 'b10b0acd-c7e4-4d82-8b88-6e2c5febcd1e',
-//   name: 'User',
-//   account: 'user@gmail.com',
-//   alias: 'User1',
-//   locationLabel: 'Приемка Экстрим',
-// }];
+    const locationColl = [acceptance, production];
 
-// const statuses = [{
-//   uuid: '923a4b6e-732c-4739-abcb-12fc64bf179c',
-//   locationLabel: 'Приемка Экстрим',
-//   name: 'sentToPlastic',
-//   label: 'Отправил в цех Пластика',
-// }];
+    const personColl = [person];
+
+    const sendStatus = {
+      uuid: '885ba19e-46ef-4cf2-9190-448011abc493',
+      locationLabel: 'Приемка Экстрим',
+      name: 'SENT',
+      label: 'Отправил',
+    };
+
+    const statusColl = [sendStatus];
+
+    const indexes = {
+      personIndex: new Index(personColl),
+      locationIndex: new Index(locationColl),
+      statusIndex: new Index(statusColl),
+    };
+
+    const source = [{
+      uuid: 'some-uuid',
+      partUuid: 'f1558022-194e-48b9-9909-a7058810ce35',
+      status: {
+        name: 'SENT',
+      },
+      location: {},
+      person: { alias: 'User1' },
+      changedAt: new Date('2019-01-01T00:00:00.000Z'),
+    }];
+
+    const assertion = [{
+      uuid: 'some-uuid',
+      partUuid: 'f1558022-194e-48b9-9909-a7058810ce35',
+      status: {
+        uuid: '885ba19e-46ef-4cf2-9190-448011abc493',
+        name: 'SENT',
+        label: 'Отправил',
+      },
+      location: {
+        uuid: '909f0cf8-0492-48b2-9c02-b10737edb080',
+        name: 'acceptance1',
+        label: 'Приемка Экстрим',
+      },
+      person: {
+        uuid: 'b10b0acd-c7e4-4d82-8b88-6e2c5febcd1e',
+        name: 'User',
+        account: 'user@gmail.com',
+        locationLabel: 'Приемка Экстрим',
+      },
+      changedAt: new Date('2019-01-01T00:00:00.000Z'),
+    }];
+
+    const result = completeStates(source, indexes);
+    expect(rmId(result)).is.deep.equal(rmId(assertion));
+  });
+});
