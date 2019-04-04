@@ -12,7 +12,7 @@ const getPartState = (acc, entry) => {
 
   const statuses = [
     {
-      name: 'SEND',
+      name: 'SENT',
       statusField: 'sentToProductionStatus',
       dateField: 'sentToProductionDate',
     },

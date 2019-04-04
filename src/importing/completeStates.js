@@ -1,4 +1,3 @@
-
 import omit from 'lodash/omit';
 
 const getStatus = (statusIndex, { name }) => omit(statusIndex.get('name', name), 'locationLabel');
