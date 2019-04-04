@@ -3,6 +3,7 @@ import Index from '../src/importing/Index';
 import completePersons from '../src/importing/completePersons';
 import completeStatuses from '../src/importing/completeStatuses';
 import completeLocations from '../src/importing/completeLocations';
+import completePartTypes from '../src/importing/completePartTypes';
 
 describe('Testing micro modules', () => {
   it('completePersons', () => {
@@ -94,6 +95,38 @@ describe('Testing micro modules', () => {
     }];
 
     const result = completeLocations(data, indexes);
+    expect(result).is.deep.equal(assertion);
+  });
+
+  it('completePartType', () => {
+    const data = [{
+      partType: { alias: 'Руль' },
+    }];
+
+    const partTypeColl = [{
+      uuid: '8d4f5154-4900-4163-8974-f307d1397420',
+      class: 'wheel',
+      name: 'wheel',
+      label: 'Руль стандарт',
+      alias: 'Руль',
+      airbagAlias: 'wheel_coverRef',
+    }];
+
+    const indexes = {
+      partTypeIndex: new Index(partTypeColl),
+    };
+
+    const assertion = [{
+      label: 'Руль стандарт',
+      partType: {
+        uuid: '8d4f5154-4900-4163-8974-f307d1397420',
+        class: 'wheel',
+        name: 'wheel',
+        label: 'Руль стандарт',
+      },
+    }];
+
+    const result = completePartTypes(data, indexes);
     expect(result).is.deep.equal(assertion);
   });
 });

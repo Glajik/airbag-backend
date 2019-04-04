@@ -1,19 +1,25 @@
-export default data => data.map(({ uuid, valuesObj }) => {
+import { fillPartType } from './completePartTypes';
+
+
+const getPart = (entry) => {
+  const { uuid, valuesObj } = entry;
+
   const {
-    orderId,
-    model,
-    color,
-    partName,
+    orderId, model, color, partName,
   } = valuesObj;
 
   return {
     uuid,
-    name: '', // complete by completePartTypes
-    partType: { partName }, // complete by completePartTypes
+    label: '', // complete by completePartTypes
+    partType: { alias: partName }, // complete by completePartTypes
     state: {}, // complete by completeState
     orderId,
     model,
     color,
     appendedAt: { orderId, field: 'start' }, // fill from AirbagCRM 'start' field
   };
-});
+};
+
+export default (data, { partTypeIndex }) => data
+  .map(getPart)
+  .map(fillPartType(partTypeIndex));
