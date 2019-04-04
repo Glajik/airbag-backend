@@ -20,3 +20,9 @@ const personAliasRegex = new RegExp(`^(?<=${vocab}:? ?\n)(.+)$`, 'gm');
 export const extractPersonAlias = extractText(personAliasRegex);
 
 export const extractLink = extractText(/^(?:=ГИПЕРССЫЛКА\( *")(https:\/\/drive\.google\.com\/drive\/.+)(?:" *; *".+" *\))$/g);
+
+export const makeMap = (coll, key) => coll.reduce((acc, item) => {
+  const idKey = item[key];
+  acc[idKey] = item;
+  return acc;
+}, {});
