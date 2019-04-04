@@ -10,11 +10,13 @@ import plasticSample from './plasticSample';
 // const content = readFileSync(plasticPath);
 // const data = JSON.parse(content);
 // expect(data).is.instanceof(Array);
+const rmId = coll => coll.map(v => omit(v, 'uuid'));
 
 describe('Test on prepared samples', () => {
   // const plasticPath = './test/datasource/Цех пластика.json';
   it('extractPhotos()', () => {
     const assertion = [{
+      uuid: 'some-uuid',
       partUuid: 'f1558022-194e-48b9-9909-a7058810ce35',
       type: 'before',
       url: 'https://drive.google.com/drive/folders/sendLinkToPhoto',
@@ -26,15 +28,13 @@ describe('Test on prepared samples', () => {
     const result = extractPhotos(data);
     const [first] = result;
     expect(first).is.haveOwnProperty('uuid');
-    expect(first).is.haveOwnProperty('partUuid');
-    const withoutUuid = result.map(v => omit(v, 'uuid'));
-    expect(withoutUuid).is.deep.equal(assertion);
+    expect(rmId(result)).is.deep.equal(rmId(assertion));
   });
 
   it('extractParts()', () => {
     const assertion = [{
       uuid: 'f1558022-194e-48b9-9909-a7058810ce35',
-      type: { partName: 'Руль' },
+      partType: { partName: 'Руль' },
       state: {},
       orderId: 1234,
       model: 'Tesla',
@@ -50,6 +50,7 @@ describe('Test on prepared samples', () => {
 
   it('extractPartState()', () => {
     const assertion = [{
+      uuid: 'some-uuid',
       partUuid: 'f1558022-194e-48b9-9909-a7058810ce35',
       name: 'SEND',
       label: { statusName: 'SEND' },
@@ -62,8 +63,7 @@ describe('Test on prepared samples', () => {
     const result = extractPartState(data);
     const [first] = result;
     expect(first).is.haveOwnProperty('uuid');
-    const withoutUuid = result.map(v => omit(v, 'uuid'));
-    expect(withoutUuid).is.deep.equal(assertion);
+    expect(rmId(result)).is.deep.equal(rmId(assertion));
   });
 });
 

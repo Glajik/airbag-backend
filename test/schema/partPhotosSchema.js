@@ -1,6 +1,5 @@
 import { schema } from 'normalizr';
 import getUuid from 'uuid/v4';
-import isEmpty from 'lodash/isEmpty';
 
 const extractText = regex => (text) => {
   const result = regex.exec(text);

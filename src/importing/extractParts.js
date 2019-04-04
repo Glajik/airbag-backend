@@ -8,7 +8,7 @@ export default data => data.map(({ uuid, valuesObj }) => {
 
   return {
     uuid,
-    type: { partName }, // complete from partTypes
+    partType: { partName }, // complete from partTypes
     state: {}, // complete by extractPartState
     orderId,
     model,

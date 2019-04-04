@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { normalize } from 'normalizr';
-import parts from '../src/importing/partsSchema';
-import { before, after } from '../src/importing/partPhotosSchema';
+import parts from './schema/partsSchema';
+import { before, after } from './schema/partPhotosSchema';
 import plasticSample from './plasticSample';
 
 // eslint-disable-next-line no-unused-vars
