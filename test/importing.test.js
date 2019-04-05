@@ -11,7 +11,7 @@ describe('Testing micro modules', () => {
       uuid: 'b10b0acd-c7e4-4d82-8b88-6e2c5febcd1e',
       name: 'User',
       account: 'user@gmail.com',
-      alias: 'UsernameAlias',
+      acceptanceAlias: 'UsernameAlias',
       locationLabel: 'Приемка Экстрим',
     }];
 
@@ -20,7 +20,7 @@ describe('Testing micro modules', () => {
     };
 
     const data = [{
-      person: { alias: 'UsernameAlias' },
+      person: { acceptanceAlias: 'UsernameAlias' },
     }];
 
     const assertion = [{
@@ -100,7 +100,7 @@ describe('Testing micro modules', () => {
 
   it('completePartType', () => {
     const data = [{
-      partType: { alias: 'Руль' },
+      partType: { acceptanceAlias: 'Руль' },
     }];
 
     const partTypeColl = [{
@@ -108,8 +108,8 @@ describe('Testing micro modules', () => {
       class: 'wheel',
       name: 'wheel',
       label: 'Руль стандарт',
-      alias: 'Руль',
-      airbagAlias: 'wheel_coverRef',
+      acceptanceAlias: 'Руль',
+      airbagField: 'wheel_coverRef',
     }];
 
     const indexes = {

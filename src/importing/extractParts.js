@@ -23,7 +23,7 @@ const getPart = (entry) => {
   return {
     uuid,
     label: '',
-    partType: { alias: partName },
+    partType: { acceptanceAlias: partName },
     state: {},
     orderId,
     model,

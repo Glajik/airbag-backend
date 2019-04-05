@@ -1,6 +1,6 @@
 import getUuid from 'uuid/v4';
 import isEmpty from 'lodash/isEmpty';
-import { extractPersonAlias } from './helpers';
+import { extractAcceptanceAlias } from './helpers';
 import { fillPerson } from './completePersons';
 import { fillStatus } from './completeStatuses';
 import { fillLocation } from './completeLocations';
@@ -8,9 +8,9 @@ import { fillLocation } from './completeLocations';
 const getPartState = (acc, entry) => {
   const { uuid: partUuid, valuesObj, notesObj } = entry;
 
-  const appendPersonAlias = item => ({
+  const appendAcceptanceAlias = item => ({
     ...item,
-    personAlias: extractPersonAlias(notesObj[item.dateField]),
+    acceptanceAlias: extractAcceptanceAlias(notesObj[item.dateField]),
   });
 
   const statuses = [
@@ -34,12 +34,12 @@ const getPartState = (acc, entry) => {
       statusField: 'returnStatus',
       dateField: 'returnDate',
     },
-  ].map(appendPersonAlias);
+  ].map(appendAcceptanceAlias);
 
 
   const determineStatus = (item) => {
     const {
-      name, personAlias, statusField, dateField,
+      name, acceptanceAlias, statusField, dateField,
     } = item;
     const status = valuesObj[statusField];
     const date = valuesObj[dateField];
@@ -49,7 +49,7 @@ const getPartState = (acc, entry) => {
       partUuid,
       status: { name },
       location: {},
-      person: { alias: personAlias },
+      person: { acceptanceAlias },
       changedAt: new Date(date),
     };
   };

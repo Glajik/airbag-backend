@@ -6,29 +6,32 @@ export default class Index {
     this.memoIndex = {};
   }
 
-  getFor(name) {
-    if (this.memoIndex[name] === undefined) {
-      this.memoIndex[name] = makeMap(this.dataColl, name);
+  /**
+   * @param {*} pivot pivot of index
+   */
+  getFor(pivot) {
+    if (this.memoIndex[pivot] === undefined) {
+      this.memoIndex[pivot] = makeMap(this.dataColl, pivot);
     }
-    return this.memoIndex[name];
+    return this.memoIndex[pivot];
   }
 
   get index() {
     return this.memoIndex;
   }
 
-  get(name, key) {
-    const index = this.getFor(name);
+  get(pivot, key) {
+    const index = this.getFor(pivot);
     return index[key] || {};
   }
 
-  has(name, key) {
-    const index = this.getFor(name);
+  has(pivot, key) {
+    const index = this.getFor(pivot);
     return index[key] !== undefined;
   }
 
-  toArray(name) {
-    const index = this.getFor(name);
+  toArray(pivot) {
+    const index = this.getFor(pivot);
     return Object.keys(index).map(key => index[key]);
   }
 }

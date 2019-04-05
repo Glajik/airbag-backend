@@ -1,6 +1,6 @@
 import getUuid from 'uuid/v4';
 import isEmpty from 'lodash/isEmpty';
-import { extractLink, extractPersonAlias } from './helpers';
+import { extractLink, extractAcceptanceAlias } from './helpers';
 import { fillPerson } from './completePersons';
 
 const getPhoto = (type, photoField, dateField) => (acc, entry) => {
@@ -24,7 +24,7 @@ const getPhoto = (type, photoField, dateField) => (acc, entry) => {
     url,
     createdAt,
     person: {
-      alias: extractPersonAlias(note),
+      acceptanceAlias: extractAcceptanceAlias(note),
     },
   }];
 };

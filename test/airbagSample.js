@@ -28,7 +28,7 @@ export default {
     delivery_sendDate: '',
     master: 'Vano',
     masterCostOfWork: '250',
-    commentPads: '',
+    commentPads: 'This is a Sidorov`s comment for pads',
     commentPlastic: 'This is a Sidorov`s comment for plastic',
     orderCardUrl: 'https://drive.google.com/file/d/orderCardUrl',
     connectors: 10,

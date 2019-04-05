@@ -15,7 +15,7 @@ describe('Importing photos', () => {
       uuid: 'b10b0acd-c7e4-4d82-8b88-6e2c5febcd1e',
       name: 'User',
       account: 'user@gmail.com',
-      alias: 'UsernameAlias',
+      acceptanceAlias: 'UsernameAlias',
       locationLabel: 'Приемка Экстрим',
     };
 

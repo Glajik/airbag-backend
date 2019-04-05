@@ -1,13 +1,13 @@
 import omit from 'lodash/omit';
 
-const getPartType = (indx, { alias }) => indx.get('alias', alias);
+const getPartType = (indx, { acceptanceAlias }) => indx.get('acceptanceAlias', acceptanceAlias);
 
 export const fillPartType = indx => (item) => {
   const partType = getPartType(indx, item.partType);
   return {
     ...item,
     label: partType.label,
-    partType: omit(partType, 'alias', 'airbagAlias'),
+    partType: omit(partType, 'acceptanceAlias', 'airbagField'),
   };
 };
 
