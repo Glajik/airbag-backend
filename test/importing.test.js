@@ -78,15 +78,12 @@ describe('Testing micro modules', () => {
     };
 
     const data = [{
-      person: {
-        locationLabel: 'Приемка Экстрим',
+      location: {
+        label: 'Приемка Экстрим',
       },
     }];
 
     const assertion = [{
-      person: {
-        locationLabel: 'Приемка Экстрим',
-      },
       location: {
         uuid: '909f0cf8-0492-48b2-9c02-b10737edb080',
         name: 'acceptance1',

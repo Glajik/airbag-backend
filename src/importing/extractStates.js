@@ -61,7 +61,10 @@ const getPartState = (acc, entry) => {
   ];
 };
 
+const copyLocationLabel = item => ({ ...item, location: { label: item.person.locationLabel } });
+
 export default (data, { personIndex, locationIndex, statusIndex }) => data.reduce(getPartState, [])
   .map(fillPerson(personIndex))
+  .map(copyLocationLabel)
   .map(fillLocation(locationIndex))
   .map(fillStatus(statusIndex));

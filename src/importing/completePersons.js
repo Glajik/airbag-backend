@@ -1,16 +1,11 @@
 import omit from 'lodash/omit';
-import isEmpty from 'lodash/isEmpty';
-// import find from 'lodash/find';
-// { airbagAlias, acceptanceAlias }
-const getPerson = (indx, entry) => {
-  const get = (aliasKey) => {
-    const { [aliasKey]: alias } = entry;
-    if (alias === undefined) return false;
-    const person = indx.get(aliasKey, alias);
-    if (isEmpty(person)) return false;
-    return omit(person, aliasKey);
-  };
-  return get('airbagAlias') || get('acceptanceAlias') || {};
+
+const pure = obj => omit(obj, 'airbagAlias', 'acceptanceAlias');
+
+const getPerson = (indx, { airbagAlias, acceptanceAlias }) => {
+  if (airbagAlias !== undefined) return pure(indx.get('airbagAlias', airbagAlias));
+  if (acceptanceAlias !== undefined) return pure(indx.get('acceptanceAlias', acceptanceAlias));
+  return {};
 };
 
 export const fillPerson = indx => item => ({ ...item, person: getPerson(indx, item.person) });
