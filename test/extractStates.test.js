@@ -74,7 +74,7 @@ describe('Importing part states', () => {
     statusIndex: new Index(statusColl),
   };
 
-  it.skip('Should make plain object as in assertion from plasticSample', () => {
+  it('Should make plain object as in assertion from plasticSample', () => {
     const acceptanceDataColl = [{
       uuid: 'f1558022-194e-48b9-9909-a7058810ce35',
       valuesObj: {

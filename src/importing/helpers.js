@@ -21,7 +21,7 @@ const acceptanceAliasRegex = new RegExp(`^(?<=${vocab}:? ?\n)(.+)$`, 'm');
 
 export const extractAcceptanceAlias = extractText(acceptanceAliasRegex);
 
-export const extractLink = extractText(/^(?:=ГИПЕРССЫЛКА\( *")(https:\/\/drive\.google\.com\/drive\/.+)(?:" *; *".+" *\))$/g);
+export const extractLink = extractText(/^(?:=ГИПЕРССЫЛКА\( *")(https:\/\/drive\.google\.com\/drive\/.+)(?:" *; *".+" *\))$/);
 
 export const makeMap = (coll, key) => coll.reduce((acc, item) => {
   const idKey = item[key];
