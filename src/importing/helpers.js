@@ -1,3 +1,4 @@
+
 const extractText = (regex) => {
   const memo = {};
   return (text) => {
@@ -10,12 +11,13 @@ const extractText = (regex) => {
   };
 };
 
+
 const vocab = 'Отправил, Отправлен, Деталь вернул, Подготовил к отправке, Принял цех, Принял'
   .split(',')
   .map(v => v.trim())
   .join(':? ?\n|');
 
-const acceptanceAliasRegex = new RegExp(`^(?<=${vocab}:? ?\n)(.+)$`, 'gm');
+const acceptanceAliasRegex = new RegExp(`^(?<=${vocab}:? ?\n)(.+)$`, 'm');
 
 export const extractAcceptanceAlias = extractText(acceptanceAliasRegex);
 
