@@ -38,8 +38,11 @@ describe('Importing parts', () => {
     }];
 
     const airbagCrmColl = [{
-      id: 1234,
-      start: new Date('2018-12-31T00:00:00.000Z'),
+      uuid: 'order-uuid',
+      valuesObj: {
+        id: 1234,
+        start: new Date('2018-12-31T00:00:00.000Z'),
+      },
     }];
 
 
@@ -51,11 +54,13 @@ describe('Importing parts', () => {
 
     const stateColl = extractStates([plasticSample], indexes);
 
+    const use = prop => ({ uuid, [prop]: data }) => ({ uuid, ...data });
+
     const newIndexes = {
       ...indexes,
       stateIndex: new Index(stateColl),
       partTypeIndex: new Index(partTypeColl),
-      airbagCrmIndex: new Index(airbagCrmColl),
+      airbagCrmIndex: new Index(airbagCrmColl.map(use('valuesObj'))),
     };
 
     const assertion = [{
