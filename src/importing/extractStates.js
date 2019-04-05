@@ -10,7 +10,7 @@ const getPartState = (acc, entry) => {
 
   const appendAcceptanceAlias = item => ({
     ...item,
-    acceptanceAlias: extractAcceptanceAlias(notesObj[item.dateField]),
+    acceptanceAlias: extractAcceptanceAlias(notesObj[item.acceptanceAliasField]),
   });
 
   const statuses = [
@@ -18,21 +18,31 @@ const getPartState = (acc, entry) => {
       name: 'SENT',
       statusField: 'sentToProductionStatus',
       dateField: 'sentToProductionDate',
+      acceptanceAliasField: 'sentToProductionDate',
     },
     {
       name: 'ACCEPTED',
       statusField: 'acceptedStatus',
       dateField: 'acceptedDate',
+      acceptanceAliasField: 'acceptedDate',
     },
     {
       name: 'READY',
       statusField: 'readyStatus',
       dateField: 'readyDate',
+      acceptanceAliasField: 'readyDate',
+    },
+    {
+      name: 'ISSUED',
+      statusField: 'returnStatus',
+      dateField: 'returnDate',
+      acceptanceAliasField: 'readyDate', // use alias from ready status
     },
     {
       name: 'ACCEPTED',
       statusField: 'returnStatus',
       dateField: 'returnDate',
+      acceptanceAliasField: 'returnDate',
     },
   ].map(appendAcceptanceAlias);
 

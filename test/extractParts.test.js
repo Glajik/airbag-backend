@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import Index from '../src/importing/Index';
 import extractStates from '../src/importing/extractStates';
 import extractParts from '../src/importing/extractParts';
-import plasticSample from './plasticSample';
 
 describe('Importing parts', () => {
   it('Should make plain object from plasticSample as in assertion', () => {
@@ -45,6 +44,20 @@ describe('Importing parts', () => {
       },
     }];
 
+    const acceptanceDataColl = [{
+      uuid: 'f1558022-194e-48b9-9909-a7058810ce35',
+      valuesObj: {
+        orderId: 1234,
+        partName: 'Руль',
+        model: 'Tesla',
+        color: 'Бежевый',
+        sentToProductionStatus: 'Отправлен',
+        sentToProductionDate: new Date('2019-01-01T00:00:00.000Z'),
+      },
+      notesObj: {
+        sentToProductionDate: 'Отправил:\nUsernameAlias',
+      },
+    }];
 
     const indexes = {
       personIndex: new Index(personColl),
@@ -52,7 +65,7 @@ describe('Importing parts', () => {
       statusIndex: new Index(statusColl),
     };
 
-    const stateColl = extractStates([plasticSample], indexes);
+    const stateColl = extractStates(acceptanceDataColl, indexes);
 
     const use = prop => ({ uuid, [prop]: data }) => ({ uuid, ...data });
 
@@ -98,7 +111,7 @@ describe('Importing parts', () => {
       },
     }];
 
-    const result = extractParts([plasticSample], newIndexes);
+    const result = extractParts(acceptanceDataColl, newIndexes);
     expect(deepOmit(result, 'uuid')).is.deep.equal(assertion);
   });
 });
