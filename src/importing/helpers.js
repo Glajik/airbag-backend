@@ -17,7 +17,7 @@ const vocab = 'Отправил, Отправлен, Деталь вернул, 
   .map(v => v.trim())
   .join(':? ?\n|');
 
-const acceptanceAliasRegex = new RegExp(`^(?<=${vocab}:? ?\n)(.+)$`, 'm');
+const acceptanceAliasRegex = new RegExp(`^(?:${vocab} *:? *\n? *)(.+)$`, 'm');
 
 export const extractAcceptanceAlias = extractText(acceptanceAliasRegex);
 
