@@ -91,19 +91,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/MainApp.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 110);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/MainApp.js":
-/*!************************!*\
-  !*** ./src/MainApp.js ***!
-  \************************/
-/*! no static exports found */
+/***/ 110:
 /***/ (function(module, exports) {
 
-eval("// import { ActionCreator, StoreCreator, combineReducers, compose, Action } from 'redux';\n// import { createAction, createActions, combineActions, handleAction } from 'redux-actions';\n// eslint-disable-next-line import/prefer-default-export\n\n//# sourceURL=webpack://%5Bname%5D/./src/MainApp.js?");
+// import { ActionCreator, StoreCreator, combineReducers, compose, Action } from 'redux';
+// import { createAction, createActions, combineActions, handleAction } from 'redux-actions';
+// eslint-disable-next-line import/prefer-default-export
 
 /***/ })
 

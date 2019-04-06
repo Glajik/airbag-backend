@@ -1,18 +1,15 @@
-import PartTypes from './reference/PartTypes';
-import Locations from './reference/Locations';
-import Persons from './reference/Persons';
-import Operations from './reference/Operations';
-import Statuses from './reference/Statuses';
-import Prices from './reference/Prices';
+import {
+  partTypes, locations, persons, statuses, operations, prices,
+} from './reference';
 
 // eslint-disable-next-line import/prefer-default-export
 export const onEdit = (e) => {
   [
-    new PartTypes(),
-    new Locations(),
-    new Persons(),
-    new Operations(),
-    new Statuses(),
-    new Prices(),
+    partTypes,
+    locations,
+    persons,
+    operations,
+    statuses,
+    prices,
   ].forEach(s => s.onEdit(e));
 };

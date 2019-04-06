@@ -1,11 +1,9 @@
 /* eslint-disable no-unused-expressions */
+import { omit } from 'lodash/omit';
 import Kava from '@glajik/kava';
 import { expect } from 'chai';
 import { doImport } from '../ImportingApp';
-import {
-  // eslint-disable-next-line no-unused-vars
-  Parts, States, History, Photos, Comments,
-} from '../db/db';
+import { parts, states } from '../db';
 
 const test = new Kava('Importing integration test');
 
@@ -22,19 +20,22 @@ export const doTests = () => {
 
   test.make('Parts. First entry should be equal to assertion', () => {
     // search part in db
-    const queryResult = Parts.dataColl.filter(o => o.orderId === orderId);
+    const queryResult = parts.dataColl.filter(o => o.orderId === orderId);
     expect(queryResult).is.length.is.equal(2);
     const [first] = queryResult;
 
     // used in next tests
     partUuid = first.uuid;
 
-    const { rowId, state } = first;
+    const { rowId, state: data } = first;
     expect(rowId).at.least(400);
     expect(rowId).at.most(1000);
 
+    // remove uuid from state
+    omit(data.state, 'uuid');
+
     // check it
-    expect(state).is.equal({
+    expect(data).is.equal({
       orderId,
       model: 'БМВ',
       color: '',
@@ -45,15 +46,11 @@ export const doTests = () => {
         label: 'Руль',
       },
       state: {
-        changedAt: new Date('2019-03-01 11:50:23'),
-        uuid: 'e440dec4-2f12-466a-abbe-1a54a65b81af',
-        name: 'acceptedFormProduction',
-        label: 'Получил из производства',
-        location: {
-          uuid: '909f0cf8-0492-48b2-9c02-b10737edb080',
-          name: 'acceptance1',
-          label: 'Приемка Экстрим',
-          localState: {},
+        // uuid: 'some-uuid',
+        status: {
+          uuid: 'e092bb2f-f02d-4776-81cc-9cecaf6fdb30',
+          name: 'ACCEPTED',
+          label: 'Принял',
         },
         person: {
           uuid: '6920e3c5-9e30-4d17-a2d7-158ccd0ea214',
@@ -61,20 +58,24 @@ export const doTests = () => {
           name: 'Андрей Журжа',
           locationLabel: 'Приемка Экстрим',
         },
-
+        location: {
+          uuid: '909f0cf8-0492-48b2-9c02-b10737edb080',
+          name: 'acceptance1',
+          label: 'Приемка Экстрим',
+        },
+        changedAt: new Date('2019-03-01 11:50:23'),
       },
-      comments: [],
     });
   });
 
   test.make('States. Check entries.', () => {
     // search part in db
-    const queryResult = States.dataColl
+    const queryResult = states.dataColl
       .filter(o => o.partUuid === partUuid);
 
-    expect(queryResult).is.length.is.equal(4);
+    expect(queryResult).is.length.is.equal(5);
 
-    const [acceptanceFirst, plasticFirst, plasticLast, acceptanceLast] = queryResult;
+    const [acceptanceFirst, plasticFirst, plasticMid, plasticLast, acceptanceLast] = queryResult;
 
     const person1 = {
       uuid: '6920e3c5-9e30-4d17-a2d7-158ccd0ea214',
@@ -107,8 +108,11 @@ export const doTests = () => {
       uuid: acceptanceFirst.state.uuid,
       partUuid,
       changedAt: new Date('2019-02-14 17:07:27'),
-      name: 'sentToProduction',
-      label: 'Отправил в производство',
+      status: {
+        uuid: '885ba19e-46ef-4cf2-9190-448011abc493',
+        name: 'SENT',
+        label: 'Отправил',
+      },
       location: location1,
       person: person1,
     });
@@ -117,8 +121,11 @@ export const doTests = () => {
       uuid: acceptanceLast.state.uuid,
       partUuid,
       changedAt: new Date('2019-03-01 11:50:23'),
-      name: 'acceptedFormProduction',
-      label: 'Получил из производства',
+      status: {
+        uuid: 'eacf295e-3cf8-4584-a9d9-b34b2b3c1477',
+        name: 'ACCEPTED',
+        label: 'Принял',
+      },
       location: location1,
       person: person1,
     });
@@ -127,8 +134,24 @@ export const doTests = () => {
       uuid: plasticFirst.state.uuid,
       partUuid,
       changedAt: new Date('2019-02-15 11:14:33'),
-      name: 'accepted',
-      label: 'Принял в производстве',
+      status: {
+        uuid: 'e092bb2f-f02d-4776-81cc-9cecaf6fdb30',
+        name: 'ACCEPTED',
+        label: 'Принял',
+      },
+      location: location2,
+      person: person2,
+    });
+
+    expect(plasticMid.state).is.deep.equal({
+      uuid: plasticMid.state.uuid,
+      partUuid,
+      changedAt: new Date('2019-02-28 14:09:19'),
+      status: {
+        uuid: '5a2a9fda-82a2-405c-a3e7-14961c6d0a5a',
+        name: 'READY',
+        label: 'К отгрузке',
+      },
       location: location2,
       person: person2,
     });
@@ -136,9 +159,12 @@ export const doTests = () => {
     expect(plasticLast.state).is.deep.equal({
       uuid: plasticLast.state.uuid,
       partUuid,
-      changedAt: new Date('2019-02-28 14:09:19'),
-      name: 'issued',
-      label: 'Выдано производством',
+      changedAt: new Date('2019-03-01 11:50:23'),
+      status: {
+        uuid: 'e440dec4-2f12-466a-abbe-1a54a65b81af',
+        name: 'ISSUED',
+        label: 'Выпустил',
+      },
       location: location2,
       person: person2,
     });

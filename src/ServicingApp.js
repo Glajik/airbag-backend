@@ -1,10 +1,9 @@
 import isEmpty from 'lodash/isEmpty';
-import PartTypes from './reference/PartTypes';
-import Locations from './reference/Locations';
-import Persons from './reference/Persons';
-import Operations from './reference/Operations';
-import Statuses from './reference/Statuses';
-import Prices from './reference/Prices';
+
+import {
+  partTypes, locations, persons, statuses, operations, prices,
+} from './reference';
+
 import AcceptancePlastic from './outter/AcceptancePlastic';
 import AcceptanceBags from './outter/AcceptanceBags';
 import AirbagCRM from './outter/AirbagCRM';
@@ -13,12 +12,12 @@ import AirbagCRMArchive from './outter/AirbagCRMArchive';
 // eslint-disable-next-line import/prefer-default-export
 export const uuidFillMissed = () => {
   [
-    new PartTypes(),
-    new Locations(),
-    new Persons(),
-    new Operations(),
-    new Statuses(),
-    new Prices(),
+    partTypes,
+    locations,
+    persons,
+    operations,
+    statuses,
+    prices,
   ].forEach((s) => {
     // eslint-disable-next-line no-undef
     s.dataColl.forEach(({ rowId, uuid }) => {
@@ -32,32 +31,30 @@ export const uuidFillMissed = () => {
 };
 
 // eslint-disable-next-line no-undef
-const exporting = obj => DriveApp.createFile(`${obj.sheetName}.json`, JSON.stringify(obj.extractAll()));
+const exporting = (name, data) => DriveApp.createFile(name, JSON.stringify(data));
 
-export const doExportAirbagCRM = () => {
-  exporting(new AirbagCRM());
-};
+export const doExportSpreadsheets = () => {
+  exporting('AirbagCRM.values.json', new AirbagCRM().values);
 
-export const doExportAirbagCRMArchive = () => {
-  exporting(new AirbagCRMArchive());
-};
+  exporting('AirbagCRMArchive.values.json', new AirbagCRMArchive().values);
 
-export const doExportAcceptancePlastic = () => {
-  exporting(new AcceptancePlastic());
-};
+  exporting('AcceptancePlastic.values.json', new AcceptancePlastic().values);
+  exporting('AcceptancePlastic.formulas.json', new AcceptancePlastic().formulas);
+  exporting('AcceptancePlastic.notes.json', new AcceptancePlastic().notes);
 
-export const doExportAcceptanceBags = () => {
-  exporting(new AcceptanceBags());
+  exporting('AcceptanceBags.values.json', new AcceptanceBags().values);
+  exporting('AcceptanceBags.formulas.json', new AcceptanceBags().formulas);
+  exporting('AcceptanceBags.notes.json', new AcceptanceBags().notes);
 };
 
 export const doExportDBReference = () => {
   [
-    new PartTypes(),
-    new Locations(),
-    new Persons(),
-    new Operations(),
-    new Statuses(),
-    new Prices(),
+    partTypes,
+    locations,
+    persons,
+    operations,
+    statuses,
+    prices,
   // eslint-disable-next-line no-undef
   ].forEach(item => DriveApp.createFile(`${item.sheetName}.json`, JSON.stringify(item.dataColl)));
 };

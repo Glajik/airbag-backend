@@ -12,20 +12,11 @@ function uuidFillMissed() {
   ServicingApp.uuidFillMissed();
 }
 
-function doExport1() {
-  ServicingApp.doExportAirbagCRM();
+function doExport() {
+  ServicingApp.doExportSpreadsheets();
 }
-function doExport2() {
-  ServicingApp.doExportAcceptancePlastic();
-}
-function doExport3() {
-  ServicingApp.doExportAcceptanceBags();
-}
-function doExport4() {
+function doExportDBReference() {
   ServicingApp.doExportDBReference();
-}
-function doExport5() {
-  ServicingApp.doExportAirbagCRMArchive();
 }
 
 function doTests() {
