@@ -20,6 +20,7 @@ const fillRecipient = indx => item => ({ ...item, recipient: getLocation(indx, i
 const getComments = (locationName, prop) => (acc, entry) => {
   const { uuid: orderUuid, valuesObj } = entry;
   const { id, manager, [prop]: comment } = valuesObj;
+  if (comment === '') return acc;
   return [...acc, {
     uuid: getUuid(),
     type: 'location',
