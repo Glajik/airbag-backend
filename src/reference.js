@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import SheetWrapper from '@glajik/sheet-wrapper';
 
-export default class ReferenceSuper extends SheetWrapper {
+class ReferenceSuper extends SheetWrapper {
   onEdit(e) {
     // event data
     const { range } = e;
@@ -52,3 +52,39 @@ export default class ReferenceSuper extends SheetWrapper {
     }
   }
 }
+
+export const partTypes = new ReferenceSuper({
+  sheetName: 'partTypes',
+  fields: 'uuid, class, name, label, acceptanceAlias, airbagField',
+  numHeaders: 1,
+});
+
+export const locations = new ReferenceSuper({
+  sheetName: 'locations',
+  fields: 'uuid, name, label',
+  numHeaders: 1,
+});
+
+export const persons = new ReferenceSuper({
+  sheetName: 'persons',
+  fields: 'uuid, name, account, airbagAlias, acceptanceAlias, locationLabel',
+  numHeaders: 1,
+});
+
+export const operations = new ReferenceSuper({
+  sheetName: 'operations',
+  fields: 'uuid, locationLabel, name, label',
+  numHeaders: 1,
+});
+
+export const statuses = new ReferenceSuper({
+  sheetName: 'statuses',
+  fields: 'uuid, locationLabel, name, label',
+  numHeaders: 1,
+});
+
+export const prices = new ReferenceSuper({
+  sheetName: 'prices',
+  fields: 'uuid, partLabel, locationLabel, operationLabel, term, cost, penalty',
+  numHeaders: 1,
+});
